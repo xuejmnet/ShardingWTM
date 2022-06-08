@@ -36,6 +36,7 @@ namespace ShardingWTM
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            //你用dbset也是可以的
             modelBuilder.Entity<Todo>(e =>
             {
                 e.HasKey(o => o.Id);

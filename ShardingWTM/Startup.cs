@@ -71,10 +71,6 @@ namespace ShardingWTM
                 options.FileSubDirSelector = SubDirSelector;
                 options.ReloadUserFunc = ReloadUser;
             });
-            services.Replace(ServiceDescriptor.Scoped<IDataContext>(sp =>
-            {
-                return sp.GetService<DataContext>();
-            }));
             services.AddScoped<DataContext>(sp =>
             {
                 var dbContextOptionsBuilder = new DbContextOptionsBuilder<DataContext>();
@@ -84,9 +80,6 @@ namespace ShardingWTM
                 dbContextOptionsBuilder.UseSharding<DataContext>();
                 return new DataContext(dbContextOptionsBuilder.Options);
             });
-            // services.AddDbContext<DataContext>(o =>
-            //     o.UseMySql("server=127.0.0.1;port=3306;database=shardingTest;userid=root;password=root;",
-            //         new MySqlServerVersion(new Version())));
             services.AddShardingConfigure<DataContext>()
                 .AddEntityConfig(o =>
                 {
@@ -108,8 +101,12 @@ namespace ShardingWTM
                         );
                     o.ReplaceTableEnsureManager(sp => new MySqlTableEnsureManager<DataContext>());
                 }).EnsureConfig();
+            
             services.Replace(ServiceDescriptor.Singleton<IDbContextCreator<DataContext>, WTMDbContextCreator<DataContext>>());
-
+            services.Replace(ServiceDescriptor.Scoped<IDataContext>(sp =>
+            {
+                return sp.GetService<DataContext>();
+            }));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

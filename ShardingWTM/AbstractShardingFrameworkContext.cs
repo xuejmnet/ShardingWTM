@@ -19,7 +19,7 @@ using DbContextOptions = Microsoft.EntityFrameworkCore.DbContextOptions;
 namespace ShardingWTM
 {
 
-    public abstract class AbstractShardingFrameworkContext:FrameworkContext, IShardingDbContext, ISupportShardingReadWrite//,ICurrentDbContextDiscover
+    public abstract class AbstractShardingFrameworkContext:FrameworkContext, IShardingDbContext, ISupportShardingReadWrite
     {
         protected IShardingDbContextExecutor ShardingDbContextExecutor
         {
@@ -135,10 +135,6 @@ namespace ShardingWTM
             return CreateGenericDbContext(entity).Add(entity);
         }
 
-
-
-#if !EFCORE2
-
         public override ValueTask<EntityEntry<TEntity>> AddAsync<TEntity>(TEntity entity, CancellationToken cancellationToken = new CancellationToken())
         {
             if (IsExecutor)
@@ -152,22 +148,6 @@ namespace ShardingWTM
                 return base.AddAsync(entity, cancellationToken);
             return CreateGenericDbContext(entity).AddAsync(entity, cancellationToken);
         }
-#endif
-#if EFCORE2
-        public override Task<EntityEntry<TEntity>> AddAsync<TEntity>(TEntity entity, CancellationToken cancellationToken = new CancellationToken())
-        {
-            if (IsExecutor)
-                return base.AddAsync(entity, cancellationToken);
-            return CreateGenericDbContext(entity).AddAsync(entity, cancellationToken);
-        }
-
-        public override Task<EntityEntry> AddAsync(object entity, CancellationToken cancellationToken = new CancellationToken())
-        {
-            if (IsExecutor)
-                return base.AddAsync(entity, cancellationToken);
-            return CreateGenericDbContext(entity).AddAsync(entity, cancellationToken);
-        }
-#endif
 
         private Dictionary<DbContext, IEnumerable<TEntity>> AggregateToDic<TEntity>(IEnumerable<TEntity> entities) where TEntity:class
         {
@@ -281,11 +261,6 @@ namespace ShardingWTM
             }
         }
 
-
-        //public override DatabaseFacade Database => _dbContextCaches.Any()
-        //    ? _dbContextCaches.First().Value.Database
-        //    : GetDbContext(true, string.Empty).Database;
-
         public override EntityEntry<TEntity> Entry<TEntity>(TEntity entity)
         {
             if (IsExecutor)
@@ -384,36 +359,6 @@ namespace ShardingWTM
             }
         }
 
-        //protected virtual void ApplyShardingConcepts()
-        //{
-        //    foreach (var entry in ChangeTracker.Entries().ToList())
-        //    {
-        //        ApplyShardingConcepts(entry);
-        //    }
-        //}
-
-        //protected virtual void ApplyShardingConcepts(EntityEntry entry)
-        //{
-
-        //    switch (entry.State)
-        //    {
-        //        case EntityState.Added:
-        //        case EntityState.Modified:
-        //        case EntityState.Deleted:
-        //            ApplyShardingConceptsForEntity(entry);
-        //            break;
-        //    }
-
-        //    //throw new ShardingCoreNotSupportedException($"entry.State:[{entry.State}]");
-        //}
-
-        //protected virtual void ApplyShardingConceptsForEntity(EntityEntry entry)
-        //{
-        //    var genericDbContext = CreateGenericDbContext(entry.Entity);
-        //    var entityState = entry.State;
-        //    entry.State = EntityState.Unchanged;
-        //    genericDbContext.Entry(entry.Entity).State = entityState;
-        //}
         public override int SaveChanges()
         {
 
@@ -465,12 +410,7 @@ namespace ShardingWTM
                 using (var tran = await Database.BeginTransactionAsync(cancellationToken))
                 {
                     i = await ShardingDbContextExecutor.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
-#if EFCORE2
-                     tran.Commit();
-#endif
-#if !EFCORE2
                     await tran.CommitAsync(cancellationToken);
-#endif
                 }
             }
             else
@@ -495,7 +435,6 @@ namespace ShardingWTM
                 base.Dispose();
             }
         }
-#if !EFCORE2
 
         public override async ValueTask DisposeAsync()
         {
@@ -519,7 +458,6 @@ namespace ShardingWTM
         {
             return ShardingDbContextExecutor.CommitAsync(cancellationToken);
         }
-#endif
 
         public void NotifyShardingTransaction()
         {

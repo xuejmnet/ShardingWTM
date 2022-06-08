@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.329
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShardingWTM", "ShardingWTM\ShardingWTM.csproj", "{8931866b-0aec-4d94-8191-f29127d1973d}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShardingWTM.Test", "ShardingWTM.Test\ShardingWTM.Test.csproj", "{a61f3868-39f2-408f-8f68-402453c31574}"
+EndProject
+
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8931866b-0aec-4d94-8191-f29127d1973d}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8931866b-0aec-4d94-8191-f29127d1973d}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8931866b-0aec-4d94-8191-f29127d1973d}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8931866b-0aec-4d94-8191-f29127d1973d}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1F219808-E6E8-4C1D-B846-41F2F7CF20FA}
+	EndGlobalSection
+EndGlobal

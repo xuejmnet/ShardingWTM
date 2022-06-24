@@ -9,6 +9,7 @@ using WalkingTec.Mvvm.Core.Extensions;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
+using ShardingWTM.EFCore.Models;
 
 namespace WalkingTec.Mvvm.Mvc.Admin.Controllers
 {

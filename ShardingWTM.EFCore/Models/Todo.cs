@@ -1,4 +1,4 @@
-namespace WalkingTec.Mvvm.Core
+namespace ShardingWTM.EFCore.Models
 {
     
     public class Todo

@@ -1,8 +1,8 @@
 using ShardingCore.Core.EntityMetadatas;
 using ShardingCore.VirtualRoutes.Mods;
-using WalkingTec.Mvvm.Core;
+using ShardingWTM.EFCore.Models;
 
-namespace ShardingWTM.Sharding
+namespace ShardingWTM.EFCore.Sharding
 {
 
     public class TodoRoute:AbstractSimpleShardingModKeyStringVirtualTableRoute<Todo>

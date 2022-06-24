@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using ShardingCore;
@@ -16,7 +11,7 @@ using WalkingTec.Mvvm.Core;
 using DbContext = Microsoft.EntityFrameworkCore.DbContext;
 using DbContextOptions = Microsoft.EntityFrameworkCore.DbContextOptions;
 
-namespace ShardingWTM
+namespace ShardingWTM.EFCore
 {
 
     public abstract class AbstractShardingFrameworkContext:FrameworkContext, IShardingDbContext, ISupportShardingReadWrite

@@ -8,6 +8,7 @@ using WalkingTec.Mvvm.Core;
 using ShardingWTM.Controllers;
 using ShardingWTM.ViewModels.HomeVMs;
 using ShardingWTM;
+using ShardingWTM.EFCore.Models;
 using WalkingTec.Mvvm.Mvc;
 using WalkingTec.Mvvm.Mvc.Admin.ViewModels.FrameworkUserVms;
 

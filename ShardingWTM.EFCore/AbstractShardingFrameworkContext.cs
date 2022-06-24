@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Migrations;
 using ShardingCore;
 using ShardingCore.Core.VirtualDatabase.VirtualDataSources;
 using ShardingCore.Core.VirtualRoutes.TableRoutes.RouteTails.Abstractions;
@@ -67,6 +68,7 @@ namespace ShardingWTM.EFCore
             if (this.CSName!=null)
             {
                 base.OnConfiguring(optionsBuilder);
+                optionsBuilder.ReplaceService<IMigrationsSqlGenerator, ShardingMySqlMigrationSqlGenerator<DataContext>>();
                 optionsBuilder.UseSharding<DataContext>();
             }
         }

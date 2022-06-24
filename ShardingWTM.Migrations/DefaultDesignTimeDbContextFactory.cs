@@ -29,7 +29,8 @@ public class DefaultDesignTimeDbContextFactory: IDesignTimeDbContextFactory<Data
             var dbContextOptionsBuilder = new DbContextOptionsBuilder<DataContext>();
             dbContextOptionsBuilder.UseMySql(
                 "server=127.0.0.1;port=3306;database=shardingTest;userid=root;password=L6yBtV6qNENrwBy7;",
-                new MySqlServerVersion(new Version()));
+                new MySqlServerVersion(new Version()))
+                .ReplaceService<IMigrationsSqlGenerator, ShardingMySqlMigrationSqlGenerator<DataContext>>();
             dbContextOptionsBuilder.UseSharding<DataContext>();
             return new DataContext(dbContextOptionsBuilder.Options);
         });
@@ -46,10 +47,10 @@ public class DefaultDesignTimeDbContextFactory: IDesignTimeDbContextFactory<Data
                 o.AddDefaultDataSource("ds0",
                     "server=127.0.0.1;port=3306;database=shardingTest;userid=root;password=L6yBtV6qNENrwBy7;");
                 o.ConfigId = "c1";
-                o.UseShellDbContextConfigure(builder =>
-                {
-                    builder.ReplaceService<IMigrationsSqlGenerator, ShardingMySqlMigrationSqlGenerator<DataContext>>();
-                });
+                //o.UseShellDbContextConfigure(builder =>
+                //{
+                //    builder.ReplaceService<IMigrationsSqlGenerator, ShardingMySqlMigrationSqlGenerator<DataContext>>();
+                //});
                 o.UseShardingQuery((conn, build) =>
                 {
                     build.UseMySql(conn, new MySqlServerVersion(new Version()),op=>op.MigrationsAssembly("ShardingWTM.EFCore")).UseLoggerFactory(efLogger);

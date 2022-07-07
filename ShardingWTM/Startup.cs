@@ -13,13 +13,9 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using ShardingCore;
-using ShardingCore.Bootstrappers;
 using ShardingCore.Core.DbContextCreator;
-using ShardingCore.Core.VirtualDatabase.VirtualDataSources;
-using ShardingCore.Core.VirtualDatabase.VirtualDataSources.Abstractions;
+using ShardingCore.Core.RuntimeContexts;
 using ShardingCore.TableExists;
-using ShardingWTM.EFCore;
-using ShardingWTM.EFCore.Sharding;
 using WalkingTec.Mvvm.Core;
 using WalkingTec.Mvvm.Core.Extensions;
 using WalkingTec.Mvvm.Core.Support.FileHandlers;
@@ -73,47 +69,8 @@ namespace ShardingWTM
                 options.FileSubDirSelector = SubDirSelector;
                 options.ReloadUserFunc = ReloadUser;
             });
-            services.AddScoped<DataContext>(sp =>
-            {
-                var dbContextOptionsBuilder = new DbContextOptionsBuilder<DataContext>();
-                dbContextOptionsBuilder.UseMySql(
-                    "server=127.0.0.1;port=3306;database=shardingTest;userid=root;password=L6yBtV6qNENrwBy7;",
-                    new MySqlServerVersion(new Version()));
-                dbContextOptionsBuilder.UseSharding<DataContext>();
-                return new DataContext(dbContextOptionsBuilder.Options);
-            });
-            services.AddShardingConfigure<DataContext>()
-                .AddEntityConfig(o =>
-                {
-                    o.CreateDataBaseOnlyOnStart = true;
-                    //o.CreateShardingTableOnStart = true;
-                    //o.EnsureCreatedWithOutShardingTable = true;
-                    o.AddShardingTableRoute<TodoRoute>();
-                })
-                .AddConfig(o =>
-                {
-                    o.AddDefaultDataSource("ds0",
-                        "server=127.0.0.1;port=3306;database=shardingTest;userid=root;password=L6yBtV6qNENrwBy7;");
-                    o.ConfigId = "c1";
-                    o.UseShellDbContextConfigure(builder =>
-                    {
-                        builder.ReplaceService<IMigrationsSqlGenerator, ShardingMySqlMigrationSqlGenerator<DataContext>>();
-                    });
-                    o.UseShardingQuery((conn, build) =>
-                    {
-                        build.UseMySql(conn, new MySqlServerVersion(new Version())).UseLoggerFactory(efLogger);
-                    });
-                    o.UseShardingTransaction((conn,build)=>
-                        build.UseMySql(conn,new MySqlServerVersion(new Version())).UseLoggerFactory(efLogger)
-                        );
-                    o.ReplaceTableEnsureManager(sp => new MySqlTableEnsureManager<DataContext>());
-                }).EnsureConfig();
-            
-            services.Replace(ServiceDescriptor.Singleton<IDbContextCreator<DataContext>, WTMDbContextCreator<DataContext>>());
-            services.Replace(ServiceDescriptor.Scoped<IDataContext>(sp =>
-            {
-                return sp.GetService<DataContext>();
-            }));
+            //注意必须是延迟的也就是带serviceprovider的注入
+            services.AddSingleton<IShardingRuntimeContext>(sp => ShardingCoreProvider.ShardingRuntimeContext);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

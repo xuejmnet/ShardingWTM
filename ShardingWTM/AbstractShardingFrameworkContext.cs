@@ -1,18 +1,21 @@
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.EntityFrameworkCore.Migrations;
 using ShardingCore;
 using ShardingCore.Core.VirtualDatabase.VirtualDataSources;
 using ShardingCore.Core.VirtualRoutes.TableRoutes.RouteTails.Abstractions;
 using ShardingCore.EFCores.OptionsExtensions;
-using ShardingCore.Extensions;
+using ShardingCore.Sharding;
 using ShardingCore.Sharding.Abstractions;
 using ShardingCore.Sharding.ShardingDbContextExecutors;
 using WalkingTec.Mvvm.Core;
 using DbContext = Microsoft.EntityFrameworkCore.DbContext;
 using DbContextOptions = Microsoft.EntityFrameworkCore.DbContextOptions;
 
-namespace ShardingWTM.EFCore
+namespace ShardingWTM
 {
 
     public abstract class AbstractShardingFrameworkContext:FrameworkContext, IShardingDbContext, ISupportShardingReadWrite
@@ -26,27 +29,21 @@ namespace ShardingWTM.EFCore
             : base(cs)
         {
             
-            ShardingDbContextExecutor =
-                (IShardingDbContextExecutor)Activator.CreateInstance(
-                    typeof(ShardingDbContextExecutor<>).GetGenericType0(this.GetType()),this);
+            ShardingDbContextExecutor =new ShardingDbContextExecutor(this);
             IsExecutor = false;
         }
         
         public AbstractShardingFrameworkContext(string cs, DBTypeEnum dbtype)
             : base(cs, dbtype)
         {
-            ShardingDbContextExecutor =
-                (IShardingDbContextExecutor)Activator.CreateInstance(
-                    typeof(ShardingDbContextExecutor<>).GetGenericType0(this.GetType()),this);
+            ShardingDbContextExecutor =new ShardingDbContextExecutor(this);
             IsExecutor = false;
         }
         
         public AbstractShardingFrameworkContext(string cs, DBTypeEnum dbtype, string version = null)
             : base(cs, dbtype, version)
         {
-            ShardingDbContextExecutor =
-                (IShardingDbContextExecutor)Activator.CreateInstance(
-                    typeof(ShardingDbContextExecutor<>).GetGenericType0(this.GetType()),this);
+            ShardingDbContextExecutor =new ShardingDbContextExecutor(this);
             IsExecutor = false;
         }
 
@@ -55,9 +52,7 @@ namespace ShardingWTM.EFCore
             var wrapOptionsExtension = options.FindExtension<ShardingWrapOptionsExtension>();
             if (wrapOptionsExtension != null)
             {
-                ShardingDbContextExecutor =
-                    (IShardingDbContextExecutor)Activator.CreateInstance(
-                        typeof(ShardingDbContextExecutor<>).GetGenericType0(this.GetType()),this);
+                ShardingDbContextExecutor =new ShardingDbContextExecutor(this);;
             }
 
             IsExecutor = wrapOptionsExtension == null;
@@ -68,8 +63,7 @@ namespace ShardingWTM.EFCore
             if (this.CSName!=null)
             {
                 base.OnConfiguring(optionsBuilder);
-                optionsBuilder.ReplaceService<IMigrationsSqlGenerator, ShardingMySqlMigrationSqlGenerator<DataContext>>();
-                optionsBuilder.UseSharding<DataContext>();
+                optionsBuilder.UseDefaultSharding<DataContext>(ShardingCoreProvider.ShardingRuntimeContext);
             }
         }
         /// <summary>
@@ -96,9 +90,9 @@ namespace ShardingWTM.EFCore
 
 
 
-        public DbContext GetDbContext(string dataSourceName, bool parallelQuery, IRouteTail routeTail)
+        public DbContext GetDbContext(string dataSourceName, CreateDbContextStrategyEnum strategy, IRouteTail routeTail)
         {
-            return ShardingDbContextExecutor.CreateDbContext(parallelQuery, dataSourceName, routeTail);
+            return ShardingDbContextExecutor.CreateDbContext(strategy, dataSourceName, routeTail);
         }
 
         /// <summary>

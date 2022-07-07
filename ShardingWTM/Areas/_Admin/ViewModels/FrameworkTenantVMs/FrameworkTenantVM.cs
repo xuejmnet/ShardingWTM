@@ -6,7 +6,8 @@ using System.ComponentModel.DataAnnotations;
 using WalkingTec.Mvvm.Core;
 using WalkingTec.Mvvm.Core.Extensions;
 using Microsoft.EntityFrameworkCore;
-using ShardingWTM.EFCore.Models;
+
+using FrameworkUser = ShardingWTM.Models.FrameworkUser;
 
 namespace WalkingTec.Mvvm.Mvc.Admin.ViewModels.FrameworkTenantVMs
 {

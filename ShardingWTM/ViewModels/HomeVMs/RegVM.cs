@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using ShardingWTM.EFCore.Models;
 using WalkingTec.Mvvm.Core;
+using FrameworkUser = ShardingWTM.Models.FrameworkUser;
 
 namespace ShardingWTM.ViewModels.HomeVMs
 {

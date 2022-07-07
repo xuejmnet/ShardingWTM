@@ -8,8 +8,7 @@ using WalkingTec.Mvvm.Mvc.Admin.ViewModels.FrameworkUserVms;
 using WalkingTec.Mvvm.Core.Extensions;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using Microsoft.Extensions.DependencyInjection;
-using ShardingWTM.EFCore.Models;
+using FrameworkUser = ShardingWTM.Models.FrameworkUser;
 
 namespace WalkingTec.Mvvm.Mvc.Admin.Controllers
 {

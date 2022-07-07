@@ -7,7 +7,8 @@ using WalkingTec.Mvvm.Core;
 using WalkingTec.Mvvm.Mvc.Admin.ViewModels.FrameworkGroupVMs;
 using WalkingTec.Mvvm.Core.Extensions;
 using System.Threading.Tasks;
-using ShardingWTM.EFCore.Models;
+
+using FrameworkUser = ShardingWTM.Models.FrameworkUser;
 
 namespace WalkingTec.Mvvm.Mvc.Admin.ViewModels.DataPrivilegeVMs
 {

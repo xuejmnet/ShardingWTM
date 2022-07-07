@@ -1,4 +1,4 @@
-namespace ShardingWTM.EFCore.Models
+namespace ShardingWTM.Models
 {
     
     public class Todo

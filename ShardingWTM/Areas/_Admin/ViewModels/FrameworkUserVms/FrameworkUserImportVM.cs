@@ -1,7 +1,8 @@
 // WTM默认页面 Wtm buidin page
 using System.Collections.Generic;
-using ShardingWTM.EFCore.Models;
+
 using WalkingTec.Mvvm.Core;
+using FrameworkUser = ShardingWTM.Models.FrameworkUser;
 
 namespace WalkingTec.Mvvm.Mvc.Admin.ViewModels.FrameworkUserVms
 {

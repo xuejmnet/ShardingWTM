@@ -4,8 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using ShardingCore.Core.VirtualRoutes.TableRoutes.RouteTails.Abstractions;
 using ShardingCore.Sharding.Abstractions;
-using ShardingWTM.EFCore;
-using ShardingWTM.EFCore.Models;
+using ShardingWTM.Models;
 using WalkingTec.Mvvm.Core;
 
 namespace ShardingWTM

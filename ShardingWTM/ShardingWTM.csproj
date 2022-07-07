@@ -12,6 +12,7 @@
 
 
   <ItemGroup>
+    <PackageReference Include="ShardingCore" Version="6.6.0.5" />
     <PackageReference Include="WalkingTec.Mvvm.TagHelpers.LayUI" Version="6.2.2" />
     <PackageReference Include="WalkingTec.Mvvm.Mvc" Version="6.2.2" />
 </ItemGroup>
@@ -21,13 +22,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ShardingWTM.EFCore\ShardingWTM.EFCore.csproj" />
-  </ItemGroup>
-
-
-
-
-  <ItemGroup>
-    <Folder Include="Models" />
   </ItemGroup>
 </Project>
 

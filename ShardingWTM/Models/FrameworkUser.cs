@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using WalkingTec.Mvvm.Core;
 
-namespace ShardingWTM.EFCore.Models
+namespace ShardingWTM.Models
 {
     /// <summary>
     /// FrameworkUser
